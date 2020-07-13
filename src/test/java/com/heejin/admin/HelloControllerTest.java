@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 // 스프링부트워 Jnit 연동
 @RunWith(SpringRunner.class)
@@ -32,6 +32,19 @@ public class HelloControllerTest {
                 .andExpect(status().isOk())
                 //헬로컨트롤러에서 hello 를 리턴시켰기 때문에, 내용이 String 이 맞는지 확인함
                 .andExpect(content().string(hello));
+    }
+
+    @Test
+    public void helloDtor가_리턴된다() throws Exception{
+        String name = "hello";
+        int amount = 1000;
+        // param은 API 테스트할떄 사용될 요청 파라미터 설정. String 값만 허용해서 문자열로 무조건 변경해야한다.
+        mvc.perform(get("/hello/dto").param("name", name)
+                                               .param("amount", String.valueOf(amount)))
+                                                                                        .andExpect(status().isOk())
+                                                                                        .andExpect(jsonPath("$.name", is(name)))
+                                                                                        .andExpect(jsonPath("$.amount", is(amount)));
+                                                //Json 응답값을 검증. $를 기준으로 필드명을 명시.name과 amount 응답값을 검증한다.
     }
 }
 
