@@ -1,6 +1,7 @@
 package com.heejin.admin.domain.posts;
 
 
+import com.heejin.admin.domain.BaseTimeEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import javax.persistence.*;
 //JPA 관련 @
 @Entity
 // ENtity 클래스는 보통 setter 메소드가 없다 !
-public class Posts {   //Posts 클래스는 db 테이블과 직접적으로 매칭될 Entity class라고 부른다
+public class Posts extends BaseTimeEntity {   //Posts 클래스는 db 테이블과 직접적으로 매칭될 Entity class라고 부른다
     @Id    //PK 필드
     @GeneratedValue(strategy = GenerationType.IDENTITY)   //id 롤 autoincrement 하겠다는 의미
     private Long id;
@@ -33,6 +34,11 @@ public class Posts {   //Posts 클래스는 db 테이블과 직접적으로 매�
         this.title= title;
         this.content=content;
         this.author=author;
+    }
+
+    public void update(String title, String content){
+        this.title = title;
+        this.content = content;
     }
 
 }
